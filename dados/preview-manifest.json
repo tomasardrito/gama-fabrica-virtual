@@ -1,0 +1,36 @@
+{
+  "version": 2,
+  "abi": "gama-operation-w2-1",
+  "kind": "operation",
+  "sources": {
+    "conveyor-traffic.js": "2da7f964ed2bab3995f806b02bb30016278407bcf8e80dfdcdd40b7a629ec07b",
+    "dados/PCPIII-Case-GAMA-completo.xlsx": "fe8d97e359bd68f8ed15311183f14cae254b450a811f1e9903c3628b946bffa7",
+    "dbr-conveyors.js": "ec2ec37ee92606676ffa5915aeae68d81af29141bf490db0c6da4446ec214c83",
+    "dbr-handling.js": "1dd856ae8d85ca294525815bc65613ce5ffdda85c3cf37f2f720698ff45e2b4b",
+    "dbr-layout.js": "0557e7e7619b60af382d69622c23cacbd7cd817e20acc2fc82b7039ab5c2e3c9",
+    "dbr-presentation.js": "4a11821939751405fc0cfb831f4a91ff201d8f31d1917674af8aa260e0b2762b",
+    "dbr-simulation.js": "c0d9673d8f86f5f96cf8a67b38a373788f61075edb8e8d25fe5fc3310c8b04aa",
+    "dbr-timing.js": "4f2c8cac254d00250c9a77cc7a2168ed80c2e4da648270780139bd1c15118ab0",
+    "dbr-upstream.js": "44fd5b8f2773531504d31f4a0f1e7e12e5b2253963aad632177c281b204a9129",
+    "film-excel.js": "fcfe18745f80b0e34d874ea8099f266be7b4c58c7bf3e5722af51ef7de92a772",
+    "film-prepared.js": "791ccc5aa3b0a2f9561a035be943cbc5eba9774731f29e4ba71c2ca0362607fe",
+    "internal-layout.js": "3e0765f8b39883413546647c914907a67696a9bc397a4e265247f1e228c11106",
+    "internal-motion.js": "1c06f526227042cc7e30a460b7e16ce188de27e2ae35e9ce73e09aa2102e1457",
+    "logistics-layout.js": "7c36487f0ba77e8d00c759cf0bfe4e18cb5c135ce2a98a73ed8b85c6a355b45f",
+    "logistics-metrics.js": "2ab5de8ad72f47a936241732ba96f75e58945fd9f0db89814a1939556532226c",
+    "logistics-motion.js": "46cff5ea7d960e33c4ba3ed8049a97ce8333605bc24f81af32fbdf55872a4361",
+    "mps-simulation.js": "ce02551de1a655d674f428e2d088060c604d36028055b0a36cca41aafd1bf51a",
+    "transport-routes.js": "617e08145b5c2c6019edeef4f29c7c150e074975293699e7b42a72bdccfe9875",
+    "truck-rear.js": "07648eff7be503a0fd2fd87a5c3ab18622f217ad13a7a1521262847c8912856b",
+    "vendor/three.core.js": "eb077d2417f61d3e6d9264c317cabc4ea35769ed6b0ab533067292a550784c20",
+    "vendor/three.module.js": "c8211c69345d2e9949dc7a8ac969380497aa0600a5a8ac6a459c8cd02dd9cb8a"
+  },
+  "assetHash": "1c919d9c4f05930b970e9e3a9fceba86d32b45fe6edd7cff2d133d0026090125",
+  "checks": {
+    "points": 9080,
+    "missions": 535,
+    "shipped": 44825,
+    "duration": 600,
+    "audit": true
+  }
+}

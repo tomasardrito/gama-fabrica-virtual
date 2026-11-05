@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt-BR">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#203942"><title>GAMA · O filme do DBR</title><meta name="description" content="A linha de personalizados em oito semanas: tambor, pulmão e corda em funcionamento."><link rel="stylesheet" href="./style.css"></head>
+<body class="film-mode">
+<header class="topbar">
+<div class="film-brand"><span class="brand-mark" aria-hidden="true">G</span><strong>GAMA</strong><span>Fábrica Virtual<small>Linha de personalizados</small></span></div>
+<div class="chapter-heading"><strong id="chapter-title">Abertura</strong><span id="playback-status" hidden>PAUSADO</span></div>
+<span class="film-signature">FEI PCP · Case GAMA</span>
+</header>
+<main id="workspace">
+<div id="world" aria-label="Filme automático da fábrica GAMA, linha de personalizados"></div>
+<div class="film-start" id="film-start" aria-busy="true"><button id="start-film" type="button" disabled>▶ Iniciar filme</button><p id="film-preparing" role="status">Preparando a fábrica…</p><p>10 minutos · Espaço pausa e retoma · R reinicia</p></div>
+<section id="breakdown-hud" class="breakdown-hud" hidden aria-live="polite"></section>
+<section id="film-card" class="film-overlay-card" hidden aria-live="polite"></section>
+<div class="scene-caption"><span id="pace-clock" hidden><i aria-hidden="true"></i>TEMPO ACELERADO</span><strong id="scene-sector">CHÃO DE FÁBRICA</strong><span id="scene-detail">Linha de personalizados · Família Z</span></div>
+<div id="pcp-dialogue" class="pcp-dialogue" hidden aria-live="polite" aria-atomic="true"><div class="speech-speaker"><strong id="dialogue-speaker"></strong></div><p id="dialogue-text"></p><span class="speech-tail" aria-hidden="true"></span></div>
+<aside class="control-panel" aria-label="Acompanhamento da produção">
+<div class="sco-overview" aria-label="Estado atual do tambor, pulmão e corda">
+<div class="sco-overview-top"><span>TAMBOR · PULMÃO · CORDA</span><span id="sco-hour">0 h úteis</span></div>
+<div class="sco-overview-grid">
+<div><span>Pulmão</span><b id="sco-buffer-units">3.571,3</b><small id="sco-buffer-zone">Verde · 100%</small></div>
+<div><span>Tambor</span><b id="sco-drum-rate">50,35</b><small>un/h · conjunta</small></div>
+<div><span>Corda</span><b id="sco-rope-status">Normal</b><small id="sco-next-call">0 lotes autorizados</small></div>
+</div><div class="sco-zone-meter" aria-hidden="true"><i id="sco-zone-marker"></i></div>
+</div>
+<section id="panel-content" aria-label="Informação da cena"></section>
+</aside>
+<section id="film-trend" class="trend-widget" aria-label="Pulmão e lead time observado"></section>
+<footer class="command-deck">
+<div class="film-timeline"><div class="film-clock"><span id="elapsed-clock">00:00</span><span> / 10:00</span></div><div class="speed-control" role="group" aria-label="Velocidade do filme"><button type="button" data-speed="1" class="active">1x</button><button type="button" data-speed="2">2x</button><button type="button" data-speed="4">4x</button></div><div class="timeline-track"><div id="film-progress" role="progressbar" aria-label="Progresso do filme" aria-valuemin="0" aria-valuemax="600" aria-valuenow="0"><i></i></div><div id="chapter-markers"></div></div></div>
+<div class="deck-metrics"><div class="deck-metric"><span>META DO MPS</span><b id="metric-target">44.825 <small>un</small></b></div><div class="deck-metric"><span>INSPECIONADO</span><b id="metric-produced">0 <small>un</small></b></div><div class="deck-metric"><span>EXPEDIDO</span><b id="metric-shipped">0 <small>un</small></b></div><div class="deck-metric"><span>EM ATRASO</span><b id="metric-backlog">0 <small>un</small></b></div></div>
+</footer>
+</main>
+<script type="module" src="./app.js"></script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a54cf1844c2ef1cd',t:'MTc5MzcyNTMxMg=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a54cf1844c2ef1cd',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body></html>

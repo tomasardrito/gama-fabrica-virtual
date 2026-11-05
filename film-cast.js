@@ -1,0 +1,19 @@
+import * as THREE from './vendor/three.module.js';
+import {createWorkerRig} from './worker-rig.js';
+import {sampleRoute} from './dbr-layout.js';
+import {FILM_CAST} from './film-story.js';
+import {sampleFilmActors} from './film-actors.js';
+export function createFilmCast({world,workers,pcpRig,textSprite}){
+ const cast=new Map(),rings=new Map();
+ for(const [name,data]of Object.entries(FILM_CAST)){const rig=name==='Marcos'?pcpRig:name==='André'?workers.get('lap').rig:name==='Jorge'?workers.get('m1').rig:createWorkerRig({shirt:data.color,helmet:name==='Ricardo'?0x33414e:0xe7c65b,showHelmet:!['Ricardo','Carlos','Marcos','Rafael'].includes(name),vestColor:name==='Rafael'?0x46845a:name==='Ricardo'?0x33414e:0xe4be58});if(!rig.group.parent)world.add(rig.group);rig.setAppearance({shirt:data.color,vestColor:name==='André'?0x4d6470:name==='Jorge'?0xe8b85a:name==='Ricardo'?0x33414e:name==='Rafael'?0x46845a:0x526d84,showHelmet:['André','Jorge'].includes(name)});cast.set(name,{rig,...data});const ring=new THREE.Mesh(new THREE.RingGeometry(.49,.61,40),new THREE.MeshBasicMaterial({color:0xf2d270,transparent:true,opacity:.85,side:THREE.DoubleSide,depthWrite:false}));ring.rotation.x=-Math.PI/2;ring.position.y=.08;world.add(ring);rings.set(name,ring);
+  if(['Carlos','Rafael','Marcos'].includes(name)){const badge=textSprite(name==='Rafael'?'FEI PCP':name==='Carlos'?'COMERCIAL':'PCP',.5,'#ffffff',name==='Rafael'?'#36754b':'#264b62');badge.position.set(0,1.08,-.2);rig.group.add(badge);}
+ }
+ const tech=createWorkerRig({shirt:0xad5748,helmet:0xeae5da,vestColor:0x7c9295});world.add(tech.group);const warning=textSprite('MANUTENÇÃO · ROSQUEADORA',6,'#fff4e6','#a34336');warning.position.set(5.2,3.4,.6);warning.userData.keepVisible=true;warning.renderOrder=10;warning.material.depthTest=false;world.add(warning);
+ function update(s,handling){const enabled=!!s.film,phase=s.film?(s.film.act==='weeks'?'production':s.film.act):s.phase,time=s.film?.presentationTime??s.elapsed??0,actors=enabled?(s.film.actors||sampleFilmActors(time,s.film.speech,{handling,story:s.film.story,operationTime:s.elapsed})):{};for(const [name,c]of cast){const actor=actors[name];if(!['André','Jorge'].includes(name)||phase!=='production')c.rig.group.visible=enabled&&(phase!=='opening'||!!actor?.entering)&&actor?.visible!==false;rings.get(name).visible=enabled&&!!actor?.speaking;if(!enabled||!actor)continue;const ring=rings.get(name);ring.position.x=actor.position[0];ring.position.z=actor.position[1];ring.material.opacity=.62+.18*Math.sin(time*4);
+   if(['André','Jorge'].includes(name)&&phase==='production')continue;
+   const speaking=actor.speaking,typing=phase==='production'&&['Carlos','Ricardo'].includes(name),hand=speaking?[[ -.24,1.15,-.24],[.3,1.37+.08*Math.sin(time*6),-.4]]:typing?[[-.18,.98+.02*Math.sin(time*10),-.52],[.18,.98-.02*Math.sin(time*10),-.52]]:null;c.rig.pose({position:actor.position,direction:actor.direction,walking:actor.walking,seated:actor.seated,gait:time*7,bend:speaking?.09:0,handsLocal:hand,twist:(actor.twist||0)+(speaking?.04*Math.sin(time*3):0)});
+  }
+  const broken=enabled&&(s.breakdownRemaining||0)>0;tech.group.visible=broken;warning.visible=broken;if(broken){const t=(s.dbr.workHours-s.breakdown.start)*46.875/120,u=Math.min(1,t/2),path=sampleRoute([[-19.5,-2.8],[1.3,-2.8],[1.3,-2.05],[7.2,-2.05],[7.2,-1.35]],u);tech.pose({position:path.position,direction:path.direction,walking:u<1,gait:time*7,bend:u===1?.25:0,handsLocal:u===1?[[-.2,1.1,-.45],[.28,1.2+.08*Math.sin(time*7),-.45]]:null});}
+ }
+ return {update,project(name,camera,width,height){const c=cast.get(name);if(!c||!c.rig.group.visible)return {visible:false};const p=c.rig.group.position.clone();p.y=1.95-(c.rig.getPose().seated||0)*.19;p.project(camera);return {x:(p.x+1)*width/2,y:(1-p.y)*height/2,visible:p.z>=-1&&p.z<=1&&Math.abs(p.x)<=1&&Math.abs(p.y)<=1};}};
+}
