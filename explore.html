@@ -14,6 +14,7 @@
   <header class="topbar">
     <a class="brand" href="./explore.html" aria-label="GAMA · início da exploração">GAMA<span>FÁBRICA VIRTUAL</span></a>
     <div class="page-title">Maquete exploratória<span>PCP III · Linha de personalizados</span></div>
+    <button id="open-scenarios" aria-haspopup="dialog" disabled>Cenários</button>
     <a class="film-link" href="./index.html">Ver o filme <span>(10 min)</span> ↗</a>
   </header>
   <main class="workspace">
@@ -23,6 +24,7 @@
         <button id="overview" disabled>↗ Visão geral</button>
         <div class="zoom-controls" aria-label="Zoom"><button id="zoom-out" aria-label="Afastar câmera" disabled>−</button><button id="zoom-in" aria-label="Aproximar câmera" disabled>+</button></div>
       </div>
+      <div id="scenario-badge" class="scenario-badge" hidden><strong></strong><span>Modo cenário · movimentação das empilhadeiras desligada</span></div>
       <div class="welcome" id="welcome"><button id="dismiss-welcome" aria-label="Fechar instruções">×</button><b>Maquete exploratória</b><p>Clique em um setor para ver os dados.</p><small>Dados de PCPIII-Case-GAMA-completo.xlsx</small></div>
       <div class="scene-caption"><span class="status-dot"></span><span id="scene-state">Preparando a fábrica</span><span class="camera-hint">Arraste para girar · role para zoom</span></div>
       <div id="loading" class="loading" role="status"><span class="spinner" aria-hidden="true"></span><h1>Preparando as oito semanas</h1><p>Carregando e conferindo a agenda do filme.<br>Cerca de 24 MB na primeira abertura.</p></div>
@@ -35,7 +37,9 @@
         <optgroup label="Máquinas"><option value="torno">Tornearia</option><option value="us1">Usinagem 1</option><option value="us2">Usinagem 2</option><option value="lap">Lapidação</option><option value="rosq">Rosqueadora</option><option value="m1">Montagem 1 · Tambor</option><option value="m2">Montagem 2</option><option value="insp">Inspeção</option></optgroup>
         <optgroup label="Estoques e coordenação"><option value="buffer">Pulmão da Montagem 1</option><option value="stock">Supermercado de corpos</option><option value="dispatch">Expedição</option><option value="office">Sala do PCP / Corda</option><option value="components">Componentes</option><option value="parking">Empilhadeiras</option></optgroup>
       </select>
+      <div id="scenario-view-tabs" class="scenario-tabs" role="group" aria-label="Painel do cenário" hidden><button id="show-sector" aria-pressed="true">Setor</button><button id="show-comparison" aria-pressed="false">Base × Cenário</button></div>
       <div id="sector-panel" class="sector-panel"><h2>A fábrica, no seu ritmo.</h2><p>Selecione um setor e avance pelas semanas para acompanhar o fluxo.</p></div>
+      <div id="comparison-panel" class="sector-panel comparison-panel" hidden><div id="comparison-chart"></div><div id="comparison-content"></div></div>
       <a class="workbook-link" href="./dados/PCPIII-Case-GAMA-completo.xlsx" download>↓ Planilha de origem · Excel</a>
     </aside>
   </main>
@@ -49,10 +53,25 @@
       <div class="week-buttons" aria-label="Ir para uma semana">
         <button data-week="1" disabled>S1</button><button data-week="2" disabled>S2</button><button data-week="3" disabled>S3</button><button data-week="4" disabled>S4</button><button data-week="5" disabled>S5</button><button data-week="6" disabled>S6</button><button data-week="7" disabled>S7</button><button data-week="8" disabled>S8</button>
       </div>
+      <div id="scenario-markers" class="scenario-markers" aria-label="Eventos do cenário" hidden></div>
       <input id="timeline" type="range" min="0" max="960" step="0.1" value="0" aria-label="Linha do tempo em horas úteis, semanas 1 a 8" disabled>
       <div class="timeline-notes"><span>0 h · início da S1</span><button id="breakdown" disabled>S5 · quebra da Rosqueadora ↗</button><span>960 h · fim da S8</span></div>
     </div>
   </footer>
+  <dialog id="scenario-drawer" class="scenario-drawer" aria-labelledby="scenario-title">
+    <div class="drawer-heading"><div><span class="eyebrow">LABORATÓRIO DE CENÁRIOS</span><h2 id="scenario-title">E se a fábrica mudar?</h2></div><button id="close-scenarios" aria-label="Fechar cenários">×</button></div>
+    <p class="note">Escolha um cenário ou ajuste as condições. Os resultados comparam as mesmas oito semanas com a base.</p>
+    <form id="scenario-form">
+      <label class="field">Cenário pronto<select id="scenario-preset"><option value="custom">Personalizado · condições da base</option></select></label>
+      <fieldset><legend>1 · Quebras de máquina</legend><p class="note">Até três paradas. Início em horas úteis da semana; reparo padrão da Tabela 2.</p><div id="scenario-breakdowns"></div><button type="button" id="add-breakdown">+ Adicionar quebra</button></fieldset>
+      <fieldset><legend>2 · Pulmão da Montagem 1</legend><label class="field">Pallets no pulmão<select id="buffer-factor"><option value="3">3 pallets</option><option value="4">4 pallets</option><option value="5">5 pallets</option><option value="6">6 pallets</option><option value="7" selected>7 pallets</option><option value="8">8 pallets</option><option value="9">9 pallets</option><option value="10">10 pallets</option></select></label><output id="buffer-limits" class="note"></output></fieldset>
+      <fieldset><legend>3 · Demanda de Z3</legend><label class="field">Evento<select id="demand-mode"><option value="none">Sem alteração</option><option value="urgent">Pedido urgente</option><option value="peak">Pico na semana</option></select></label><div id="demand-fields" class="form-grid" hidden><label class="field">Semana<select id="demand-week"></select></label><label id="urgent-field" class="field">Quantidade adicional<select id="urgent-quantity"></select></label><label id="peak-field" class="field" hidden>Aumento<select id="peak-percent"><option value="20">20%</option><option value="40">40%</option></select></label></div><p class="note" id="demand-note" hidden>Pedido chega no início da semana e vence no fim dela.</p></fieldset>
+      <fieldset><legend>4 · Corda</legend><label class="field">Coordenação da produção<select id="scenario-rope"><option value="on">Ligada · reposição pelo consumo</option><option value="off">Desligada · GAMA hoje, produção empurrada</option></select></label></fieldset>
+      <p class="report-source">Fonte: PCPIII-Case-GAMA-completo.xlsx · DBR Personalizado!B34, B37; RCCP (TOC) Personalizado!B4:I7. Enunciado · Tabelas 2 e 3.</p>
+      <p id="scenario-status" class="note" role="status" aria-live="polite"></p>
+      <div class="drawer-actions"><button type="submit" class="play" id="run-scenario">Rodar cenário</button><button type="button" id="return-base">Voltar à base</button></div>
+    </form>
+  </dialog>
   <noscript>Ative o JavaScript para explorar a maquete 3D.</noscript>
 </body>
 </html>
